@@ -1,0 +1,33 @@
+.floating-shape {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.2;
+  filter: blur(1.5rem);
+}
+
+.floating-shape.bg-green-500 {
+  background-color: var(--primary-green);
+}
+
+.floating-shape.bg-emerald-500 {
+  background-color: var(--secondary-green);
+}
+
+.floating-shape.bg-lime-500 {
+  background-color: #84cc16;
+}
+
+.floating-shape.w-64 {
+  width: 16rem;
+  height: 16rem;
+}
+
+.floating-shape.w-48 {
+  width: 12rem;
+  height: 12rem;
+}
+
+.floating-shape.w-32 {
+  width: 8rem;
+  height: 8rem;
+}

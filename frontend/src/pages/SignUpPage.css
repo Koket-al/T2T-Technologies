@@ -1,0 +1,88 @@
+.signup-container {
+  max-width: 28rem;
+  width: 100%;
+ background: linear-gradient(to right, #1a0101, #e60404);
+  backdrop-filter: blur(1.5rem);
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.signup-content {
+  padding: 2rem;
+}
+
+.signup-title {
+  font-size: 1.875rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  background:  #eee4e4;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+
+.error-message {
+  color: #f80808;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.signup-button {
+  margin-top: 1.25rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(to right, #1a0101, #f30505);
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s, transform 0.2s;
+}
+
+.signup-button:hover:not(:disabled) {
+ background: linear-gradient(to right, #dd0c0c, #0e0000);
+}
+
+.signup-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #10b981, 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+
+.signup-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.signup-spinner {
+  width: 1.5rem;
+  height: 1.5rem;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+.signup-footer {
+  padding: 1rem 2rem;
+  background-color: rgba(17, 24, 39, 0.5);
+  display: flex;
+  justify-content: center;
+}
+
+.footer-text {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+.footer-link {
+  color: #34d399;
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,131 @@
+/* Container & Layout */
+.dashboard-container {
+  max-width: 28rem;
+  width: 100%;
+  margin: 2.5rem auto;
+  padding: 2rem;
+  background: linear-gradient(to right, #0e0000, #dd0c0c);
+  backdrop-filter: blur(1rem);
+  border-radius: 0.75rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dashboard-title {
+  font-size: 1.875rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: white;
+}
+
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.dashboard-card {
+  padding: 1.25rem;
+  background: linear-gradient(to right, #dd0c0c, #0e0000);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
+}
+
+.card-text {
+  color: #e0e0e0;
+  margin-bottom: 0.25rem;
+}
+
+/* MANUAL INPUT STYLING */
+.manual-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.manual-input {
+  width: 100%;
+  padding: 12px;
+  background: #000000;
+  border: 2px solid #dd0c0c;
+  border-radius: 8px;
+  color: white;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 3px;
+  text-align: center;
+  text-transform: uppercase;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.manual-input:focus {
+  border-color: #ffffff;
+}
+
+.claim-button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(to right, #1a0101, #e60404);
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s;
+  text-transform: uppercase;
+}
+
+.claim-button:hover:not(:disabled) {
+  background: linear-gradient(to right, #dd0c0c, #0e0000);
+  transform: translateY(-2px);
+}
+
+.claim-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Status Messages */
+.status-display {
+  margin-top: 15px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.success-text { color: #4ade80; }
+.error-text { color: #f87171; }
+
+/* Logout Styling */
+.logout-container {
+  margin-top: 1.5rem;
+}
+
+.logout-button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(to right, #1a0101, #e60404);
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s;
+}
+
+.logout-button:hover {
+  background: linear-gradient(to right, #dd0c0c, #0e0000);
+  filter: brightness(1.2);
+}

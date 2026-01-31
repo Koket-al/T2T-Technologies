@@ -1,0 +1,112 @@
+.login-container {
+  max-width: 28rem;
+  width: 100%;
+  background: linear-gradient(to right, #1a0101, #e60404);
+  backdrop-filter: blur(1.5rem);
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.login-content {
+  padding: 2rem;
+}
+
+.login-title {
+  font-size: 1.875rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  background: linear-gradient(to right, #e0dada, #f3f1f1);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.forgot-password-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border:none;
+  background: none ;
+}
+
+.forgot-password-link {
+  font-size: 0.875rem;
+  color: #e7e7ec;
+  text-decoration: none ;
+}
+
+.forgot-password-link:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  color: #f87171;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.login-button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+ background: linear-gradient(to right, #1a0101, #f30505);
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s, transform 0.2s;
+}
+
+.login-button:hover:not(:disabled) {
+  background: linear-gradient(to right, #dd0c0c, #0e0000);
+}
+
+.login-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #660101, 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+
+.login-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 1.5rem;
+  height: 1.5rem;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.login-footer {
+  padding: 1rem 2rem;
+  background-color: rgba(17, 24, 39, 0.5);
+  display: flex;
+  justify-content: center;
+}
+
+.footer-text {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+.footer-link {
+  color: #e6dbdb;
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}

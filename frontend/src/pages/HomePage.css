@@ -1,0 +1,731 @@
+/* === Global Styles === */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at top left, #E41A1C, #000 60%);
+  color: #fff;
+  overflow-x: hidden;
+}
+
+.cc-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  perspective: 1000px;
+}
+
+/* === Buttons === */
+.btn {
+  cursor: pointer;
+  border-radius: 40px;
+  padding: 14px 40px;
+  font-size: 1rem;
+  border: none;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.btn.primary {
+  background: linear-gradient(135deg, #E41A1C, #b51712);
+  color: #fff;
+}
+
+.btn.primary:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(228, 26, 28, 0.5);
+}
+
+.btn.ghost {
+  background-color: transparent;
+  border: 2px solid #fff;
+  color: #fff;
+}
+
+.btn.ghost:hover {
+  background: #fff;
+  color: #E41A1C;
+  transform: translateY(-2px);
+}
+
+/* === Hero Section === */
+.cc-hero {
+  background: linear-gradient(120deg, #E41A1C, #000 60%, #fff 160%);
+  color: #fff;
+  width: 100%;
+  padding: 100px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* animated gradient glow */
+.cc-hero::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 180deg at 50% 50%, #E41A1C, #000, #E41A1C);
+  animation: rotate-bg 15s linear infinite;
+  opacity: 0.15;
+  z-index: 0;
+}
+
+@keyframes rotate-bg {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.cc-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto 60px;
+  position: relative;
+  z-index: 2;
+}
+
+.cc-brand {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 10px rgba(255,255,255,0.3);
+}
+
+.cc-nav-actions button {
+  margin-left: 15px;
+}
+
+/* === Hero Content === */
+.cc-hero-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-left h1 {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  text-shadow: 0 3px 20px rgba(0,0,0,0.5);
+}
+
+.hero-left .sub {
+  font-size: 1.2rem;
+  margin-bottom: 25px;
+  color: #f5eaea;
+  max-width: 450px;
+}
+
+.hero-ctas {
+  margin-top: 20px;
+}
+
+.hero-ctas button, .hero-ctas a {
+  margin-right: 15px;
+}
+
+/* === Spinning Bottle & Coins === */
+.hero-right {
+  flex: 1 1 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.phone-mock {
+  position: relative;
+  transform-style: preserve-3d;
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotateY(0deg); }
+  50% { transform: translateY(-10px) rotateY(10deg); }
+}
+
+.phone-mock img {
+  width: 250px;
+  height: auto;
+  border-radius: 25px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  transform: rotateY(15deg);
+}
+
+/* Spinning Bottle */
+.prize-mock {
+  position: absolute;
+  top: -100px;
+  animation: spinBottle 8s linear infinite;
+}
+
+.prize-mock img {
+  width: 120px;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6));
+}
+
+@keyframes spinBottle {
+  from { transform: rotateY(0deg) rotateZ(0deg); }
+  to { transform: rotateY(360deg) rotateZ(360deg); }
+}
+
+/* Floating Coins */
+.prize-mock::before,
+.prize-mock::after {
+  content: "🪙";
+  font-size: 2rem;
+  position: absolute;
+  animation: spinCoin 5s linear infinite;
+}
+
+.prize-mock::before { top: 40px; left: -60px; animation-delay: 1s; }
+.prize-mock::after { top: 100px; right: -60px; animation-delay: 2s; }
+
+@keyframes spinCoin {
+  0% { transform: rotateY(0deg) translateY(0); opacity: 1; }
+  50% { transform: rotateY(180deg) translateY(-20px); opacity: 0.8; }
+  100% { transform: rotateY(360deg) translateY(0); opacity: 1; }
+}
+
+/* === How It Works Section === */
+.how {
+  background: linear-gradient(120deg, #E41A1C, #000 60%, #fff 160%);
+  border-radius: 45px;
+  margin: 80px 20px;
+  text-align: center;
+  padding: 80px 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+.how h2 {
+  color: #fff;
+  font-size: 2.8rem;
+  margin-bottom: 15px;
+  text-shadow: 0 2px 15px rgba(0,0,0,0.3);
+}
+
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.step {
+  background: rgba(255,255,255,0.1);
+  border-radius: 25px;
+  padding: 30px;
+  width: 240px;
+  backdrop-filter: blur(8px);
+  transition: all 0.4s ease;
+  transform-style: preserve-3d;
+}
+
+.step:hover {
+  transform: translateY(-15px) rotateY(10deg);
+  box-shadow: 0 10px 30px rgba(228, 26, 28, 0.4);
+}
+
+.step .icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  color: #E41A1C;
+}
+
+/* === Rewards Section === */
+.rewards {
+  background: linear-gradient(120deg, #000, #E41A1C 60%, #fff 160%);
+  padding: 80px 20px;
+  text-align: center;
+  border-radius: 45px;
+  margin: 60px 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  position: relative;
+}
+
+.rewards-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+}
+
+.card {
+  background: rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 20px;
+  width: 250px;
+  backdrop-filter: blur(10px);
+  transition: transform 0.4s ease, box-shadow 0.3s ease;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(255,255,255,0.2);
+}
+
+/* === Blockchain === */
+.blockchain {
+  background: #111;
+  padding: 80px 20px;
+  border-radius: 45px;
+  text-align: center;
+  box-shadow: inset 0 0 60px rgba(228,26,28,0.3);
+}
+
+/* === Social Proof & Demo Sections (matching theme) === */
+.social-proof, .demo, .faq, .final-cta {
+  background: linear-gradient(120deg, #E41A1C, #000 60%, #fff 160%);
+  border-radius: 45px;
+  padding: 80px 20px;
+  margin: 60px 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+/* === FAQ Buttons === */
+.faq-q {
+  background-color: rgba(255,255,255,0.1);
+  color: #fff;
+  border-radius: 12px;
+  padding: 15px 20px;
+  border: none;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.faq-q:hover {
+  background-color: rgba(255,255,255,0.25);
+  transform: translateY(-3px);
+}
+
+/* === Footer === */
+.site-footer {
+  text-align: center;
+  padding: 40px;
+  font-size: 0.9rem;
+  color: #ddd;
+  background: #000;
+}
+
+/* === Animations for subtle depth === */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(228,26,28,0.4); }
+  50% { box-shadow: 0 0 40px rgba(228,26,28,0.8); }
+}
+/* ===== Image & Mock fixes — replace previous phone/prize/card/demo image rules ===== */
+
+/* Container behavior: preserve 3D, create natural framing for images */
+.phone-mock,
+.prize-mock,
+.card img,
+.demo img {
+  display: block;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+/* Phone mock: fixed frame with consistent aspect-ratio, image covers the frame without distortion */
+.phone-mock {
+  width: 260px;
+  height: 540px;            /* mobile mockphone aspect */
+  border-radius: 28px;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.06));
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
+
+/* ensure images inside the phone mock are cropped & centered */
+.phone-mock img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;        /* preserves aspect ratio, fills frame */
+  object-position: center;  /* center-crop behavior */
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  transform: translateZ(40px) rotateY(10deg); /* subtle 3D offset */
+}
+
+/* Prize mock (bottle): give a contained square frame for bottle image, keep rotation centered */
+.prize-mock {
+  width: 140px;
+  height: 360px;            /* tall frame for bottle-like assets */
+  position: absolute;
+  top: -120px;              /* adjust to sit near phone mock */
+  left: 60%;                /* relative to hero-right - adjust visually */
+  transform-origin: 50% 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: visible;
+}
+
+/* bottle image itself: keep natural aspect, prevent stretching */
+.prize-mock img {
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  object-fit: contain;      /* ensures entire bottle is visible without cropping */
+  object-position: center;
+  display: block;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+/* Card images: consistent card thumbnails (square-ish) without stretching */
+.card img {
+  width: 100%;
+  height: 160px;            /* fixed visual height for cards */
+  max-height: 180px;
+  object-fit: cover;        /* crop and centre the image */
+  object-position: center;
+  border-radius: 12px;
+  display: block;
+}
+
+/* Demo/dashboard image: landscape cover, responsive */
+.demo img {
+  width: 100%;
+  max-width: 900px;
+  height: auto;
+  max-height: 420px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+  display: block;
+}
+
+/* Emoji coins fallback container (in case emoji renders poorly on some devices) */
+.prize-mock .coin-fallback {
+  display: none; /* kept hidden by default; can be toggled in JSX if needed */
+  position: absolute;
+  font-size: 1.6rem;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+}
+
+/* If any image fails to load, show a subtle neutral background and an icon via pseudo-element */
+.phone-mock img:empty,
+.phone-mock img[src=""],
+.prize-mock img:empty,
+.prize-mock img[src=""],
+.card img:empty,
+.card img[src=""] {
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.06));
+  min-height: 120px;
+}
+
+/* ===== Responsive tweaks to avoid overflow and keep aspect ratios on small screens ===== */
+@media (max-width: 900px) {
+  .phone-mock {
+    width: 200px;
+    height: 420px;
+    border-radius: 20px;
+  }
+
+  .prize-mock {
+    width: 100px;
+    height: 260px;
+    top: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .prize-mock img {
+    height: 100%;
+  }
+
+  .card img {
+    height: 140px;
+  }
+
+  .demo img {
+    max-height: 320px;
+  }
+}
+/* --------------------------
+   3D HERO (Option 1) — CSS
+   Replace or append these rules
+   -------------------------- */
+
+/* scene perspective: gives depth to everything inside */
+.cc-hero {
+  perspective: 1400px;
+  perspective-origin: 50% 20%;
+  overflow: visible;
+  position: relative;
+  z-index: 1;
+}
+
+/* subtle parallax: child layers will transform in 3D on hover */
+.cc-hero-content {
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(.2,.9,.2,1);
+  will-change: transform;
+  position: relative;
+  z-index: 2;
+}
+
+/* on hover the content slightly tilts for depth (works on desktop) */
+.cc-hero:hover .cc-hero-content {
+  transform: rotateX(6deg) translateZ(30px);
+}
+
+/* Hero left - pushed slightly back in 3D space to create layer separation */
+.hero-left {
+  transform: translateZ(-40px);
+  transition: transform 0.6s ease;
+}
+
+/* Hero right (visual focal) brought forward */
+.hero-right {
+  transform: translateZ(60px);
+  transition: transform 0.6s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  position: relative;
+}
+
+/* ===== Phone mock (glass panel with reflection) ===== */
+.phone-mock {
+  width: 260px;
+  height: 540px;
+  border-radius: 28px;
+  overflow: hidden;
+  position: relative;
+  transform-style: preserve-3d;
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.55),
+    0 6px 20px rgba(228,26,28,0.08) inset;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
+  margin-top: 10px;
+}
+
+/* inner image: portrait, cover the frame without distortion */
+.phone-mock img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transform: translateZ(80px) rotateY(10deg); /* slightly in front for depth */
+  transition: transform 0.8s cubic-bezier(.2,.9,.2,1);
+  will-change: transform;
+  border-radius: 24px;
+}
+
+/* glass sheen reflection */
+.phone-mock::after {
+  content: "";
+  position: absolute;
+  left: -20%;
+  top: -30%;
+  width: 160%;
+  height: 90%;
+  transform: rotate(-18deg) translateZ(120px);
+  background: linear-gradient(120deg, rgba(255,255,255,0.14), rgba(255,255,255,0.02));
+  filter: blur(22px);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* phone base shadow on the ground to anchor the object */
+.phone-mock::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -28px;
+  width: 240px;
+  height: 42px;
+  transform: translateX(-50%) translateZ(-80px);
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.45), rgba(0,0,0,0.06) 60%);
+  filter: blur(12px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* subtle hover lift on the phone (increases 3D feel) */
+.cc-hero:hover .phone-mock img {
+  transform: translateZ(120px) rotateY(6deg) translateY(-6px);
+}
+
+/* ===== Spinning Bottle — centered and in front =====
+   Uses the prize-mock img as the bottle asset; ensure bottle images have transparent background
+*/
+.prize-mock {
+  width: 160px;              /* container size — tall to accommodate bottle */
+  height: 360px;
+  position: absolute;
+  right: -40px;              /* placed overlapping the phone mock */
+  top: -80px;
+  transform-origin: 50% 60%;
+  transform-style: preserve-3d;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* The bottle image rotates in 3D around Y and also does a small tilt on X */
+.prize-mock img {
+  width: auto;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  animation: bottleSpin 8s linear infinite;
+  filter: drop-shadow(0 16px 30px rgba(0,0,0,0.55));
+  backface-visibility: hidden;
+}
+
+/* bottle spin keyframes */
+@keyframes bottleSpin {
+  0%   { transform: rotateY(0deg) rotateX(0deg) translateZ(70px) rotateZ(0deg); }
+  25%  { transform: rotateY(90deg) rotateX(2deg) translateZ(80px) rotateZ(2deg); }
+  50%  { transform: rotateY(180deg) rotateX(0deg) translateZ(70px) rotateZ(0deg); }
+  75%  { transform: rotateY(270deg) rotateX(-2deg) translateZ(80px) rotateZ(-2deg); }
+  100% { transform: rotateY(360deg) rotateX(0deg) translateZ(70px) rotateZ(0deg); }
+}
+
+/* ===== Orbiting & flipping coins (CSS coins built with radial-gradient) =====
+   Using pseudo-elements so you don't need extra DOM elements.
+*/
+.prize-mock::before,
+.prize-mock::after,
+.prize-mock .extra-coin {
+  content: "";
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffec99 0%, #f6c84a 30%, #c48b1f 60%, #8a5c10 100%);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.45), inset 0 -6px 16px rgba(0,0,0,0.06);
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* primary coin positions & animations */
+.prize-mock::before {
+  left: -84px;
+  top: 60px;
+  animation: coinOrbitA 5s linear infinite;
+  transform-style: preserve-3d;
+  filter: drop-shadow(0 8px 18px rgba(0,0,0,0.45));
+}
+
+.prize-mock::after {
+  right: -84px;
+  top: 140px;
+  width: 40px;
+  height: 40px;
+  animation: coinOrbitB 6.2s linear infinite;
+  transform-style: preserve-3d;
+  filter: drop-shadow(0 6px 16px rgba(0,0,0,0.42));
+}
+
+/* optional third coin placed using an inner element selector; this will only work if you keep the extra markup.
+   But in case you can't edit JSX, we keep two pseudo coins for consistent cross-compatibility.
+*/
+.prize-mock .extra-coin {
+  display: none; /* keep hidden unless you add <div class="extra-coin"/> in JSX */
+}
+
+/* coin flip/orbit animations (3D illusion via rotateX + translate) */
+@keyframes coinOrbitA {
+  0%   { transform: rotateY(0deg) translateZ(30px) rotateX(0deg) translateX(0) translateY(0) scale(1); opacity: 1; }
+  25%  { transform: rotateY(120deg) translateZ(40px) rotateX(40deg) translateX(-10px) translateY(-20px) scale(0.98); opacity: 0.95; }
+  50%  { transform: rotateY(240deg) translateZ(20px) rotateX(80deg) translateX(0) translateY(-10px) scale(0.92); opacity: 0.85; }
+  75%  { transform: rotateY(360deg) translateZ(40px) rotateX(40deg) translateX(10px) translateY(10px) scale(0.98); opacity: 0.95; }
+  100% { transform: rotateY(480deg) translateZ(30px) rotateX(0deg) translateX(0) translateY(0) scale(1); opacity: 1; }
+}
+
+@keyframes coinOrbitB {
+  0%   { transform: rotateY(0deg) translateZ(10px) rotateX(0deg) translateX(0) translateY(0) scale(1); opacity: 1; }
+  30%  { transform: rotateY(140deg) translateZ(50px) rotateX(60deg) translateX(6px) translateY(-28px) scale(0.92); opacity: 0.9; }
+  60%  { transform: rotateY(280deg) translateZ(12px) rotateX(90deg) translateX(-6px) translateY(12px) scale(0.94); opacity: 0.88; }
+  100% { transform: rotateY(360deg) translateZ(10px) rotateX(0deg) translateX(0) translateY(0) scale(1); opacity: 1; }
+}
+
+/* a subtle ground shadow for the bottle (elliptical) */
+.prize-mock .bottle-shadow,
+.prize-mock::marker { /* marker unused — purely defensive selector to avoid lint */
+  content: "";
+}
+
+/* create a pseudo ground-shadow under the bottle using another pseudo-element on parent wrapper */
+.cc-hero .hero-right::before {
+  content: "";
+  position: absolute;
+  width: 420px;
+  height: 120px;
+  left: 50%;
+  transform: translateX(-50%) translateZ(-90px);
+  bottom: -20px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.55), rgba(0,0,0,0.08) 55%);
+  filter: blur(18px);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ===== Accessibility & Performance (reduce-motion) ===== */
+@media (prefers-reduced-motion: reduce) {
+  .prize-mock img,
+  .prize-mock::before,
+  .prize-mock::after,
+  .phone-mock img {
+    animation: none !important;
+    transition: none !important;
+  }
+  .cc-hero:hover .cc-hero-content { transform: none !important; }
+}
+
+/* ===== Responsive tweaks ===== */
+@media (max-width: 900px) {
+  .prize-mock {
+    right: 10px;
+    top: -60px;
+    width: 120px;
+    height: 300px;
+  }
+
+  .phone-mock {
+    width: 200px;
+    height: 420px;
+    border-radius: 20px;
+  }
+
+  .phone-mock img { transform: translateZ(80px) rotateY(6deg); }
+
+  .prize-mock::before,
+  .prize-mock::after {
+    width: 36px;
+    height: 36px;
+    left: -64px;
+    right: -64px;
+  }
+}
