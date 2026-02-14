@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuthStore } from "../store/authStore";
@@ -10,15 +10,15 @@ const EmailVerificationPage = () => {
   const inputRefs = useRef([]);
   const navigate = useNavigate();
 
-  const { error, isLoading, verifyEmail, clearError } = useAuthStore();
+  const { error, isLoading, verifyEmail, clearError, user } = useAuthStore();
 
   const handleChange = (index, value) => {
     if (error) clearError();
-    if (!/^\d*$/.test(value)) return; // only digits
+    if (!/^\d*$/.test(value)) return;
 
     const newCode = [...code];
 
-    if (value.length > 1) { // paste
+    if (value.length > 1) {
       const pasted = value.slice(0, 6).split("");
       for (let i = 0; i < 6; i++) newCode[i] = pasted[i] || "";
     } else {
@@ -38,22 +38,26 @@ const EmailVerificationPage = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     const verificationCode = code.join("");
-
     if (verificationCode.length !== 6) {
       toast.error("Please enter a 6-digit code");
       return;
     }
-
-    const success = await verifyEmail(verificationCode);
-    if (success) {
+    try {
+      await verifyEmail(verificationCode);
       toast.success("Email verified successfully!");
       navigate("/");
-    } else {
-      toast.error("Invalid or expired verification code");
+    } catch (err) {
+      console.log("Verification Error caught in UI:", err.message);
     }
   };
+
+  useEffect(() => {
+    if (user && code.every((digit) => digit !== "")) {
+      handleSubmit();
+    }
+  }, [code, user]);
 
   return (
     <div className="verification-container">
@@ -86,6 +90,7 @@ const EmailVerificationPage = () => {
                 onFocus={() => clearError()}
                 disabled={isLoading}
                 className={`code-input ${error ? "input-error" : ""}`}
+                autoFocus={index === 0}
               />
             ))}
           </div>
@@ -101,11 +106,11 @@ const EmailVerificationPage = () => {
           </motion.button>
 
           <p className="resend-text">
-            Didn’t receive a code?{" "}
+            Didn't receive a code?{" "}
             <button
               type="button"
               className="resend-link"
-              onClick={() => toast.success("New code sent to your email")}
+              onClick={() => toast.success("New code requested")}
             >
               Resend Code
             </button>

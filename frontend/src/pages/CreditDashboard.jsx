@@ -3,13 +3,30 @@ import { useState, useEffect } from "react";
 import { api, useAuthStore } from "../store/authStore";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-import { ShieldCheck, TrendingUp, Wallet, Landmark, Info, ChevronLeft, ArrowRightLeft, Globe } from "lucide-react";
+import { 
+  LayoutDashboard, 
+  Wallet, 
+  ShoppingBag, 
+  Trophy, 
+  ShieldCheck, 
+  History, 
+  LogOut, 
+  ArrowRightLeft, 
+  Zap,
+  Globe,
+  TrendingUp,
+  Landmark,
+  ChevronLeft
+} from "lucide-react";
+import '../pages/DashboardPage.css';
 
 const CreditDashboard = () => {
-  const { user, swapCodaToCtc, applyForLoan } = useAuthStore();
+  const { user, logout, swapCodaToCtc, applyForLoan } = useAuthStore();
   const [profile, setProfile] = useState({ creditScore: 300, loanEligibility: 0, totalRecycled: 0 });
   const [isExecuting, setIsExecuting] = useState(false);
   const [isSwapping, setIsSwapping] = useState(false);
+
+  const handleLogout = () => logout();
 
   useEffect(() => {
     const fetchCredit = async () => {
@@ -27,7 +44,6 @@ const CreditDashboard = () => {
     if (user.codaBalance < 10) return toast.error("Min 10 CODA needed to swap");
     setIsSwapping(true);
     try {
-      // Swaps 10 CODA for 1 CTC
       const res = await swapCodaToCtc(10);
       toast.success(res.message, { icon: '🔄' });
     } catch (err) {
@@ -49,236 +65,170 @@ const CreditDashboard = () => {
     }
   };
 
-  // --- PREMIUM CSS STYLES ---
-  const styles = {
-    page: {
-      background: 'radial-gradient(circle at 50% 0%, #2b0000 0%, #000000 100%)',
-      minHeight: '100vh',
-      color: '#fff',
-      padding: '40px 20px',
-      fontFamily: 'sans-serif',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      overflowX: 'hidden'
-    },
-    container: { maxWidth: '1000px', width: '100%' },
-    nav: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' },
-    card: {
-      background: 'rgba(255,255,255,0.03)',
-      backdropFilter: 'blur(10px)',
-      border: '1px solid rgba(255,255,255,0.1)',
-      borderRadius: '30px',
-      padding: '30px',
-      position: 'relative',
-      overflow: 'hidden',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between'
-    },
-    scoreValue: {
-      fontSize: 'clamp(60px, 10vw, 100px)',
-      fontWeight: '900',
-      lineHeight: '1',
-      display: 'block',
-      margin: '20px 0',
-      textAlign: 'center'
-    },
-    progressBar: { height: '10px', background: 'rgba(255,255,255,0.1)', borderRadius: '10px', marginTop: '20px', overflow: 'hidden' },
-    button: {
-      width: '100%',
-      padding: '15px',
-      borderRadius: '15px',
-      border: 'none',
-      fontWeight: '900',
-      fontSize: '12px',
-      cursor: 'pointer',
-      transition: '0.3s',
-      textTransform: 'uppercase',
-      marginTop: '15px'
-    }
-  };
-
   return (
-    <div style={styles.page}>
-      <div style={styles.container}>
+    <div className="t2t-main-layout">
+      {/* --- SIDEBAR (Persistent) --- */}
+      <aside className="t2t-sidebar">
+        <div className="sidebar-brand">
+          <div className="brand-logo">T2T</div>
+          <span>TECHNOLOGIES</span>
+        </div>
         
-        {/* Navigation & Status */}
-        <div style={styles.nav}>
-          <Link to="/" style={{ color: '#ef4444', fontWeight: 'bold', textDecoration: 'none', fontSize: '12px' }}>
-            ← RETURN TO HUB
-          </Link>
-          <div style={{ color: '#60a5fa', fontSize: '10px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <Globe size={12} /> SEPOLIA MAINNET: CONNECTED
-          </div>
-        </div>
+        <nav className="sidebar-nav">
+          <Link to="/" className="nav-item"><LayoutDashboard size={20} /> Dashboard</Link>
+          <Link to="/marketplace" className="nav-item"><ShoppingBag size={20} /> Marketplace</Link>
+          <Link to="/lottery" className="nav-item"><Trophy size={20} /> Mega Lottery</Link>
+          <Link to="/safety-verification" className="nav-item"><ShieldCheck size={20} /> Food Safety</Link>
+          <Link to="/credit-identity" className="nav-item active"><History size={20} /> Credit ID</Link>
+          <Link to="/withdraw" className="nav-item cashout"><Wallet size={20} /> Sell Tokens</Link>
+        </nav>
 
-        {/* Page Hero */}
-        <div style={{ textAlign: 'center', marginBottom: '50px' }}>
-          <h1 style={{ fontSize: '4rem', fontWeight: '900', margin: '0', letterSpacing: '-2px' }}>
-            CREDIT <span style={{ color: '#dc2626' }}>ID</span>
-          </h1>
-          <div style={{ color: '#22c55e', fontSize: '11px', fontWeight: 'bold', border: '1px solid rgba(34,197,94,0.2)', display: 'inline-block', padding: '6px 18px', borderRadius: '25px', marginTop: '10px' }}>
-            <ShieldCheck size={14} style={{ verticalAlign: 'middle', marginRight: '8px' }} /> VERIFIED BY CREDITCOIN PROTOCOL
-          </div>
+        <div className="sidebar-footer">
+          <button onClick={handleLogout} className="logout-btn-premium">
+            <LogOut size={18} /> TERMINATE SESSION
+          </button>
         </div>
+      </aside>
 
-        {/* Main Dashboard Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '25px' }}>
+      {/* --- MAIN CONTENT --- */}
+      <main className="t2t-content-area">
+        <header className="content-header">
+          <div>
+            <h1>Financial Identity</h1>
+            <p>Your sustainability reputation on the <span className="text-emerald-500">Creditcoin Ledger</span></p>
+          </div>
+          <div className="header-status" style={{ borderColor: '#22c55e', color: '#22c55e' }}>
+            <ShieldCheck size={14} />
+            <span style={{ letterSpacing: '1px' }}>IDENTITY VERIFIED</span>
+          </div>
+        </header>
+
+        <div className="dashboard-grid">
           
-          {/* Section 1: Reputation Score */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ ...styles.card, gridColumn: 'span 2' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: '#888', fontSize: '11px', fontWeight: 'bold', letterSpacing: '1px' }}>NETWORK REPUTATION</span>
-              <TrendingUp style={{ color: '#22c55e' }} />
+          {/* SECTION 1: NETWORK REPUTATION (CREDIT SCORE) */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="grid-card vault-card">
+            <div className="card-header-flex">
+              <h3>Eco-Sustainability Score</h3>
+              <TrendingUp size={18} className="text-emerald-500" />
             </div>
             
-            <div>
-                <span style={styles.scoreValue}>{profile.creditScore}</span>
-                <p style={{ color: '#22c55e', fontWeight: 'bold', letterSpacing: '4px', textAlign: 'center', fontSize: '12px' }}>
-                  RANK: {profile.creditScore > 600 ? 'GOLD' : 'STANDARD'}
+            <div className="balance-display" style={{ textAlign: 'center', display: 'block' }}>
+                <span style={{ 
+                    fontSize: '6rem', 
+                    fontWeight: '900', 
+                    background: 'linear-gradient(to bottom, #fff, #444)', 
+                    WebkitBackgroundClip: 'text', 
+                    WebkitTextFillColor: 'transparent' 
+                }}>
+                    {profile.creditScore}
+                </span>
+                <p style={{ color: '#22c55e', fontWeight: 'bold', letterSpacing: '4px', fontSize: '12px', marginTop: '-10px' }}>
+                    RANK: {profile.creditScore > 600 ? 'GOLD' : 'STANDARD'}
                 </p>
             </div>
 
-            <div style={styles.progressBar}>
+            <div style={{ height: '8px', width: '100%', background: 'rgba(255,255,255,0.05)', borderRadius: '10px', marginTop: '20px', overflow: 'hidden' }}>
                 <motion.div 
                     initial={{ width: 0 }} animate={{ width: `${(profile.creditScore / 850) * 100}%` }}
-                    transition={{ duration: 1.5 }}
-                    style={{ height: '100%', background: 'linear-gradient(to right, #dc2626, #eab308, #22c55e)' }} 
+                    transition={{ duration: 1.5, ease: "easeOut" }}
+                    style={{ height: '100%', background: 'linear-gradient(to right, #dc2626, #facc15, #22c55e)' }}
                 />
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: '#444', marginTop: '10px', fontWeight: 'bold' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '9px', color: '#444', marginTop: '10px', fontWeight: 'bold' }}>
                 <span>POOR</span>
                 <span>EXCELLENT (850)</span>
             </div>
           </motion.div>
 
-          {/* Section 2: Currency Swap */}
-          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} style={styles.card}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
-                <ArrowRightLeft size={24} style={{ color: '#22c55e' }} />
-                <span style={{ color: '#888', fontSize: '11px', fontWeight: 'bold' }}>CURRENCY SWAP</span>
+          {/* SECTION 2: CURRENCY SWAP */}
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="grid-card">
+            <div className="card-header-flex">
+              <h3>Asset Exchange</h3>
+              <ArrowRightLeft size={18} className="text-emerald-500" />
             </div>
-            
-            <div style={{ margin: '15px 0', textAlign: 'center' }}>
-                <div style={{ fontSize: '22px', fontWeight: 'bold' }}>{user?.codaBalance || 0} <span style={{fontSize: '10px', color: '#dc2626'}}>CODA</span></div>
-                <div style={{ color: '#444', fontSize: '18px', margin: '8px 0' }}>⇅</div>
-                <div style={{ fontSize: '22px', fontWeight: 'bold', color: '#22c55e' }}>{user?.ctcBalance || 0} <span style={{fontSize: '10px'}}>CTC</span></div>
+            <div style={{ margin: '20px 0', textAlign: 'center' }}>
+                <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{user?.codaBalance || 0} <small style={{fontSize: '10px', color: '#dc2626'}}>CODA</small></div>
+                <div style={{ color: '#333', margin: '10px 0' }}>⇅</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#22c55e' }}>{user?.ctcBalance || 0} <small style={{fontSize: '10px'}}>CTC</small></div>
             </div>
-
             <button 
-              onClick={handleSwap}
-              disabled={isSwapping || (user?.codaBalance < 10)}
-              style={{
-                ...styles.button,
-                background: user?.codaBalance >= 10 ? '#22c55e' : '#111',
-                color: user?.codaBalance >= 10 ? '#000' : '#444'
-              }}
+                onClick={handleSwap} 
+                disabled={isSwapping || (user?.codaBalance < 10)}
+                style={{ width: '100%', padding: '12px', borderRadius: '10px', border: 'none', background: user?.codaBalance >= 10 ? '#22c55e' : '#111', color: '#000', fontWeight: 'bold', cursor: 'pointer' }}
             >
-              {isSwapping ? "Swapping..." : "SWAP 10 CODA → 1 CTC"}
+                {isSwapping ? "SWAPPING..." : "SWAP 10 CODA → 1 CTC"}
             </button>
           </motion.div>
 
-          {/* Section 3: Loan Execution */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} style={{ ...styles.card, gridColumn: 'span 2' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
-                <Landmark size={24} style={{ color: '#eab308' }} />
-                <span style={{ color: '#888', fontSize: '11px', fontWeight: 'bold' }}>LIQUIDITY ACCESS</span>
+          {/* SECTION 3: LIQUIDITY ACCESS (LOAN) */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="grid-card">
+            <div className="card-header-flex">
+              <h3>Liquidity Access</h3>
+              <Landmark size={18} className="text-yellow-500" />
             </div>
-            
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ fontSize: '64px', fontWeight: '900', color: '#eab308' }}>${profile.loanEligibility}.00</div>
-                <button 
-                  onClick={handleLoanExecution}
-                  disabled={profile.creditScore < 600 || isExecuting}
-                  style={{
-                    ...styles.button,
-                    width: 'auto',
-                    padding: '18px 40px',
-                    background: profile.creditScore >= 600 ? '#dc2626' : '#111',
-                    color: profile.creditScore >= 600 ? '#fff' : '#444',
-                    boxShadow: profile.creditScore >= 600 ? '0 0 20px rgba(220,38,38,0.4)' : 'none'
-                  }}
-                >
-                  {isExecuting ? "Executing Transaction..." : "DISBURSE LOAN IN CTC"}
-                </button>
+            <div style={{ fontSize: '3.5rem', fontWeight: '900', color: '#facc15', margin: '15px 0' }}>
+                ${profile.loanEligibility}.00
             </div>
-            <p style={{ color: '#555', fontSize: '10px', marginTop: '15px' }}>* Repayments are automatically handled through future recycling efforts.</p>
+            <button 
+              onClick={handleLoanExecution}
+              disabled={profile.creditScore < 600 || isExecuting}
+              className="convert-btn-ultra"
+              style={{ 
+                background: profile.creditScore >= 600 ? 'var(--coke-red)' : '#111', 
+                color: profile.creditScore >= 600 ? '#fff' : '#444' 
+              }}
+            >
+              {isExecuting ? "EXECUTING..." : (profile.creditScore >= 600 ? "DISBURSE LOAN IN CTC" : "LOCKED < 600")}
+            </button>
           </motion.div>
 
-          {/* Section 4: Asset Tracking */}
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} style={styles.card}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
-                <Wallet size={24} style={{ color: '#dc2626' }} />
-                <span style={{ color: '#888', fontSize: '11px', fontWeight: 'bold' }}>LIVE ASSET STORAGE</span>
+          {/* SECTION 4: LEDGER HISTORY */}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="grid-card" style={{ gridColumn: 'span 2' }}>
+            <div className="card-header-flex">
+              <h3>Global Ledger Transactions</h3>
+              <Globe size={18} className="text-blue-400" />
             </div>
             
-            <div style={{ background: 'rgba(0,0,0,0.5)', padding: '15px', borderRadius: '15px', marginBottom: '10px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
-                    <span style={{ color: '#777' }}>CODA Balance</span>
-                    <span style={{ fontWeight: 'bold' }}>{user?.codaBalance || 0}</span>
-                </div>
-            </div>
-            <div style={{ background: 'rgba(0,0,0,0.5)', padding: '15px', borderRadius: '15px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
-                    <span style={{ color: '#777' }}>CTC Balance</span>
-                    <span style={{ fontWeight: 'bold', color: '#22c55e' }}>{user?.ctcBalance || 0}</span>
-                </div>
-            </div>
+            <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '10px' }}>
+                <thead>
+                    <tr style={{ borderBottom: '1px solid #111', textAlign: 'left', color: '#444', fontSize: '10px' }}>
+                        <th style={{ paddingBottom: '10px' }}>EVENT</th>
+                        <th style={{ paddingBottom: '10px' }}>ASSET</th>
+                        <th style={{ paddingBottom: '10px' }}>STATUS</th>
+                        <th style={{ paddingBottom: '10px' }}>NETWORK</th>
+                    </tr>
+                </thead>
+                <tbody style={{ fontSize: '12px', color: '#ccc' }}>
+                    {user?.activeLoan && (
+                        <tr style={{ borderBottom: '1px solid #0a0a0a' }}>
+                            <td style={{ padding: '15px 0' }}>Micro-Loan Disbursement</td>
+                            <td style={{ color: '#facc15' }}>+{profile.loanEligibility} CTC</td>
+                            <td style={{ color: '#22c55e' }}>CONFIRMED</td>
+                            <td>SEPOLIA L1</td>
+                        </tr>
+                    )}
+                    <tr style={{ borderBottom: '1px solid #0a0a0a' }}>
+                        <td style={{ padding: '15px 0' }}>Identity Reputation Sync</td>
+                        <td>Score: {profile.creditScore}</td>
+                        <td style={{ color: '#22c55e' }}>SYNCED</td>
+                        <td>CREDITCOIN</td>
+                    </tr>
+                    <tr>
+                        <td style={{ padding: '15px 0' }}>Genesis Identity Created</td>
+                        <td>Account Init</td>
+                        <td style={{ color: '#22c55e' }}>VERIFIED</td>
+                        <td>T2T PROTOCOL</td>
+                    </tr>
+                </tbody>
+            </table>
           </motion.div>
-
-          {/* Info Section */}
-          <div style={{ ...styles.card, gridColumn: '1 / -1', background: 'transparent', border: '1px dashed #333' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                <Info size={30} style={{ color: '#60a5fa' }} />
-                <p style={{ fontSize: '12px', color: '#777', lineHeight: '1.6', margin: '0' }}>
-                    Your sustainability score is an immutable record. By converting local <b>CODA</b> tokens to <b>Creditcoin (CTC)</b>, 
-                    you are transforming recycling effort into global financial collateral.
-                </p>
-            </div>
-          </div>
 
         </div>
-        {/* LOAN LEDGER HISTORY */}
-<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} style={{ ...styles.card, marginTop: '30px' }}>
-    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
-        <ShieldCheck size={24} style={{ color: '#22c55e' }} />
-        <span style={{ color: '#888', fontSize: '11px', fontWeight: 'bold' }}>CREDITCOIN TRANSACTION LEDGER</span>
-    </div>
-    
-    <table style={{ width: '100%', borderCollapse: 'collapse', color: '#ccc', fontSize: '12px' }}>
-        <thead>
-            <tr style={{ borderBottom: '1px solid #222', textAlign: 'left' }}>
-                <th style={{ padding: '10px 0' }}>EVENT</th>
-                <th style={{ padding: '10px 0' }}>ASSET</th>
-                <th style={{ padding: '10px 0' }}>STATUS</th>
-                <th style={{ padding: '10px 0' }}>NETWORK</th>
-            </tr>
-        </thead>
-        <tbody>
-            {user?.activeLoan && (
-                <tr style={{ borderBottom: '1px solid #111' }}>
-                    <td style={{ padding: '15px 0' }}>Micro-Loan Disbursement</td>
-                    <td style={{ color: '#facc15' }}>+{profile.loanEligibility} CTC</td>
-                    <td style={{ color: '#22c55e' }}>CONFIRMED</td>
-                    <td style={{ color: '#60a5fa' }}>SEPOLIA L1</td>
-                </tr>
-            )}
-            <tr style={{ borderBottom: '1px solid #111' }}>
-                <td style={{ padding: '15px 0' }}>Identity Sync</td>
-                <td>Score: {profile.creditScore}</td>
-                <td style={{ color: '#22c55e' }}>SYNCED</td>
-                <td style={{ color: '#60a5fa' }}>CREDITCOIN</td>
-            </tr>
-        </tbody>
-    </table>
-</motion.div>
 
-        {/* Footer */}
-        <footer style={{ marginTop: '80px', textAlign: 'center', opacity: '0.2', fontSize: '10px', letterSpacing: '4px', paddingBottom: '40px' }}>
-            GLUWA / CREDITCOIN / COCA-COLA ALLIANCE 2026
+        <footer className="dashboard-footer-minimal" style={{ marginTop: '60px' }}>
+           GLUWA / CREDITCOIN / T2T ALLIANCE | IMMUTABLE FINANCIAL IDENTITY
         </footer>
-      </div>
+      </main>
     </div>
   );
 };

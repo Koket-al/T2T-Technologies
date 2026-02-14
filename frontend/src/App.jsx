@@ -1,25 +1,28 @@
-import {
-  BrowserRouter as Router,
-  Navigate,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { BrowserRouter as Router, Navigate, Route, Routes } from "react-router-dom";
 import FloatingShape from "./components/FloatingShape";
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import EmailVerificationPage from "./pages/EmailVerificationPage";
 import DashboardPage from "./pages/DashboardPage";
+import AdminDashboard from "./pages/AdminDashboard"; // ✅ Added Admin Dashboard
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import MarketplacePage from "./pages/MarketplacePage";
+import LotteryPage from "./pages/LotteryPage";
+import CreditDashboard from "./pages/CreditDashboard";
+import SafetyPage from "./pages/SafetyPage";
+
+import HomePage from "./pages/HomePage"; 
 import LoadingSpinner from "./components/LoadingSpinner";
 import { Toaster } from "react-hot-toast";
 import { useAuthStore } from "./store/authStore";
 import { useEffect } from "react";
-import MarketplacePage from "./pages/MarketplacePage";
-import LotteryPage from "./pages/LotteryPage";
-import CreditDashboard from "./pages/CreditDashboard";
+import NetworkHealth from "./pages/NetworkHealth";
+import SecurityHub from "./pages/SecurityHub";
+import Inventory from "./pages/Inventory";
+import SmartBinAI from "./pages/SmartBinAI";
 
-// Protect routes from unauthenticated users
+// --- PROTECTED ROUTE LOGIC (For Regular Users) ---
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, user } = useAuthStore();
 
@@ -34,7 +37,23 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
-// Redirect authenticated users away from auth pages (login/signup)
+// --- ADMIN ROUTE LOGIC (Strict Access Control) ---
+const AdminRoute = ({ children }) => {
+  const { isAuthenticated, user } = useAuthStore();
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // If they are logged in but NOT an admin, send them to the user dashboard
+  if (user?.role !== "admin") {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+};
+
+// --- AUTH REDIRECT LOGIC ---
 const RedirectAuthenticatedUser = ({ children }) => {
   const { isAuthenticated, user } = useAuthStore();
 
@@ -46,8 +65,7 @@ const RedirectAuthenticatedUser = ({ children }) => {
 };
 
 function App() {
-  // ✅ FIXED: Destructured isAuthenticated here so it can be used in the routes below
-  const { isCheckingAuth, checkAuth, isAuthenticated } = useAuthStore();
+  const { isCheckingAuth, checkAuth, isAuthenticated, user } = useAuthStore();
 
   useEffect(() => {
     checkAuth();
@@ -58,40 +76,44 @@ function App() {
   return (
     <Router>
       <div className="app-background">
-        <FloatingShape
-          color="bg-green-500"
-          size="w-64"
-          top="-5%"
-          left="10%"
-          delay={0}
-        />
-        <FloatingShape
-          color="bg-emerald-500"
-          size="w-48"
-          top="70%"
-          left="80%"
-          delay={5}
-        />
-        <FloatingShape
-          color="bg-lime-500"
-          size="w-32"
-          top="40%"
-          left="-10%"
-          delay={2}
-        />
+        {/* Consistent Cyber-Red Atmosphere */}
+        <FloatingShape color="bg-red-600" size="w-64" top="-5%" left="10%" delay={0} />
+        <FloatingShape color="bg-red-900" size="w-48" top="70%" left="80%" delay={5} />
+        <FloatingShape color="bg-zinc-800" size="w-32" top="40%" left="-10%" delay={2} />
 
         <Routes>
-          {/* Main Dashboard */}
+          {/* 
+            ✅ THE SMART ROOT ROUTE 
+            1. Not Logged In -> Show Landing (HomePage)
+            2. Logged In as Admin -> Show Admin Control Room
+            3. Logged In as User -> Show User Hub
+          */}
           <Route
             path="/"
             element={
-              <ProtectedRoute>
-                <DashboardPage />
-              </ProtectedRoute>
+              !isAuthenticated ? (
+                <HomePage />
+              ) : user?.role === "admin" ? (
+                <AdminDashboard />
+              ) : (
+                <ProtectedRoute>
+                  <DashboardPage />
+                </ProtectedRoute>
+              )
             }
           />
 
-          {/* ✅ Marketplace - Now Protected */}
+          {/* --- ADMIN ONLY ROUTES --- */}
+          <Route
+            path="/admin-dashboard"
+            element={
+              <AdminRoute>
+                <AdminDashboard />
+              </AdminRoute>
+            }
+          />
+
+          {/* --- PROTECTED USER ROUTES --- */}
           <Route
             path="/marketplace"
             element={
@@ -101,7 +123,6 @@ function App() {
             }
           />
 
-          {/* ✅ Lottery - Now Protected */}
           <Route
             path="/lottery"
             element={
@@ -111,7 +132,6 @@ function App() {
             }
           />
 
-          {/* ✅ Credit Identity - Now Protected and fixed error */}
           <Route
             path="/credit-identity"
             element={
@@ -121,7 +141,18 @@ function App() {
             }
           />
 
-          {/* Auth Routes */}
+          <Route
+            path="/safety-verification"
+            element={
+              <ProtectedRoute>
+                <SafetyPage />
+              </ProtectedRoute>
+            }
+          />
+
+          
+
+          {/* --- AUTHENTICATION FLOW --- */}
           <Route
             path="/signup"
             element={
@@ -130,6 +161,7 @@ function App() {
               </RedirectAuthenticatedUser>
             }
           />
+          
           <Route
             path="/login"
             element={
@@ -158,11 +190,20 @@ function App() {
               </RedirectAuthenticatedUser>
             }
           />
+          <Route 
+  path="/smart-bin" 
+  element={<ProtectedRoute><SmartBinAI /></ProtectedRoute>} 
+/>
+     <Route path="/admin/health" element={<AdminRoute><NetworkHealth /></AdminRoute>} />
+<Route path="/admin/security" element={<AdminRoute><SecurityHub /></AdminRoute>} />
+<Route path="/admin/inventory" element={<AdminRoute><Inventory /></AdminRoute>} />
 
-          {/* Fallback to Home */}
+
+          {/* --- GLOBAL FALLBACK --- */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-        <Toaster />
+        
+        <Toaster position="top-center" reverseOrder={false} />
       </div>
     </Router>
   );

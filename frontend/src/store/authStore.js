@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import axios from "axios";
+import { openSTXTransfer } from "@stacks/connect";
 
 export const api = axios.create({
   baseURL: "http://localhost:5000/api",
@@ -7,15 +8,20 @@ export const api = axios.create({
   withCredentials: true,
 });
 
+// Automatically attach JWT token to every request
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
-  if (token) config.headers.Authorization = `Bearer ${token}`;
+  if (token) {
+    // Remove any accidental quotes from the token string
+    const cleanToken = token.replace(/['"]+/g, "");
+    config.headers.Authorization = `Bearer ${cleanToken}`;
+  }
   return config;
 });
 
 export const useAuthStore = create((set) => ({
-  user: null,
-  isAuthenticated: false,
+  user: JSON.parse(localStorage.getItem("user")) || null,
+  isAuthenticated: !!localStorage.getItem("token"),
   isLoading: false,
   error: null,
   message: null,
@@ -24,13 +30,14 @@ export const useAuthStore = create((set) => ({
   clearError: () => set({ error: null }),
   clearMessage: () => set({ message: null }),
 
-  // ---------------- AUTHENTICATION ----------------
+  // ---------------- 1. AUTHENTICATION ACTIONS ----------------
+
   signup: async (email, password, name) => {
     set({ isLoading: true, error: null });
     try {
       const res = await api.post("/auth/signup", { email, password, name });
+      if (res.data.token) localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
-      localStorage.setItem("token", res.data.token);
       set({ user: res.data.user, isAuthenticated: true, isLoading: false });
       return res.data;
     } catch (err) {
@@ -43,8 +50,8 @@ export const useAuthStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       const res = await api.post("/auth/login", { email, password });
+      if (res.data.token) localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
-      localStorage.setItem("token", res.data.token);
       set({ user: res.data.user, isAuthenticated: true, isLoading: false });
       return res.data;
     } catch (err) {
@@ -57,7 +64,9 @@ export const useAuthStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       const res = await api.post("/auth/verify-email", { code });
-      set({ user: res.data.user, isAuthenticated: true, isLoading: false });
+      const updatedUser = { ...res.data.user, isVerified: true };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      set({ user: updatedUser, isLoading: false, message: "Email verified!" });
       return res.data;
     } catch (err) {
       set({ error: err.response?.data?.message || "Verification failed", isLoading: false });
@@ -67,86 +76,96 @@ export const useAuthStore = create((set) => ({
 
   checkAuth: async () => {
     set({ isCheckingAuth: true });
+    const token = localStorage.getItem("token");
+    if (!token) {
+      set({ isAuthenticated: false, isCheckingAuth: false, user: null });
+      return;
+    }
     try {
       const res = await api.get("/auth/check-auth");
       set({ user: res.data.user, isAuthenticated: true, isCheckingAuth: false });
-    } catch {
+    } catch (err) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
       set({ isAuthenticated: false, isCheckingAuth: false, user: null });
     }
   },
 
   logout: async () => {
     try { await api.post("/auth/logout"); } catch (e) {}
-    localStorage.removeItem("user");
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     set({ user: null, isAuthenticated: false });
   },
 
-  // ---------------- MARKETPLACE ----------------
-  purchaseItem: async (itemId) => {
-    set({ isLoading: true });
+  forgotPassword: async (email) => {
+    set({ isLoading: true, error: null });
     try {
-      const res = await api.post("/marketplace/purchase", { itemId });
-      set((state) => ({
-        user: { ...state.user, codaBalance: res.data.newBalance },
-        isLoading: false,
-      }));
+      const res = await api.post("/auth/forgot-password", { email });
+      set({ message: res.data.message, isLoading: false });
       return res.data;
     } catch (err) {
-      set({ isLoading: false });
-      const errorMessage = err.response?.data?.message || "Purchase failed";
-      throw new Error(errorMessage);
-    }
-  },
-
-  // ---------------- REWARDS & WALLET ----------------
-  updateUserWallet: async (walletAddress) => {
-    set({ isLoading: true });
-    try {
-      await api.put("/rewards/update-wallet", { walletAddress });
-      set((state) => ({
-        user: { ...state.user, walletAddress: walletAddress },
-        isLoading: false,
-      }));
-    } catch (err) {
-      set({ isLoading: false, error: "Failed to link wallet" });
+      set({ error: err.response?.data?.message || "Reset Error", isLoading: false });
       throw err;
     }
   },
 
-  convertPointsToCoda: async () => {
-    set({ isLoading: true });
+  resetPassword: async (token, password) => {
+    set({ isLoading: true, error: null });
     try {
-      const res = await api.post("/rewards/convert");
-      set((state) => ({
-        user: { 
-          ...state.user, 
-          points: res.data.newPoints, 
-          codaBalance: res.data.newCodaBalance 
-        },
-        isLoading: false,
-      }));
+      const res = await api.post(`/auth/reset-password/${token}`, { password });
+      set({ message: res.data.message, isLoading: false });
       return res.data;
     } catch (err) {
-      set({ isLoading: false });
+      set({ error: err.response?.data?.message || "Update Error", isLoading: false });
       throw err;
     }
   },
 
-  // ---------------- CREDITCOIN (CTC) IDENTITY & LOANS ----------------
-  
-  // ✅ NEW: SWAP LOCAL CODA TO GLOBAL CREDITCOIN (CTC)
-  swapCodaToCtc: async (amount) => {
+  // ---------------- 2. x402 STACKS PAYMENT LOGIC ----------------
+
+  payX402: async (paymentRequest) => {
+    return new Promise((resolve, reject) => {
+      if (!paymentRequest || !paymentRequest.amount) {
+        return reject(new Error("Malformed Payment Request from Backend"));
+      }
+      try {
+        // Manual Network object to fix the "not a constructor" bug in React 19
+        const manualNetwork = {
+          version: 1,
+          chainId: 2147483648,
+          coreApiUrl: "https://api.testnet4.hiro.so",
+          isMainnet: () => false,
+          getCoreApiUrl: () => "https://api.testnet4.hiro.so",
+        };
+
+        openSTXTransfer({
+          network: manualNetwork,
+          recipient: paymentRequest.recipient,
+          amount: paymentRequest.amount.toString(),
+          memo: paymentRequest.memo || "T2T Service Fee",
+          appDetails: {
+            name: "T2T Technologies",
+            icon: window.location.origin + "/vite.svg",
+          },
+          onFinish: (data) => resolve(data.txId),
+          onCancel: () => reject(new Error("Handshake Cancelled")),
+        });
+      } catch (err) {
+        reject(err);
+      }
+    });
+  },
+
+  // ---------------- 3. T2T ECONOMY & REWARDS ----------------
+
+  // Redeems code, provides safety report
+  claimCode: async (hash) => {
     set({ isLoading: true });
     try {
-      // Calls the /api/credit/swap route on backend
-      const res = await api.post("/credit/swap", { codaAmount: amount });
+      const res = await api.post("/rewards/scan", { hash });
       set((state) => ({
-        user: { 
-          ...state.user, 
-          codaBalance: res.data.newCodaBalance, 
-          ctcBalance: res.data.newCtcBalance 
-        },
+        user: { ...state.user, points: state.user.points + res.data.pointsAdded },
         isLoading: false
       }));
       return res.data;
@@ -156,20 +175,110 @@ export const useAuthStore = create((set) => ({
     }
   },
 
-  // ✅ NEW: EXECUTE BLOCKCHAIN LOAN (DISBURSED IN CTC)
+  // Unlocks safety data after x402 payment
+  unlockSafety: async (txId, hash) => {
+    await api.post("/rewards/unlock-safety", { txId, hash });
+    set((state) => {
+      const updatedUser = { ...state.user, paidSafetyHashes: [...state.user.paidSafetyHashes, hash] };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      return { user: updatedUser };
+    });
+  },
+
+  // Unlocks Admin Dashboard after 1 STX payment
+  unlockAdmin: async (txId) => {
+    set({ isLoading: true });
+    try {
+      const res = await api.post("/admin/unlock-panel", { txId });
+      set((state) => {
+        const updatedUser = { ...state.user, hasMarketplaceAccess: true };
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+        return { user: updatedUser, isLoading: false };
+      });
+      return res.data;
+    } catch (err) {
+      set({ isLoading: false });
+      throw err;
+    }
+  },
+
+  // Link Leather wallet address to profile
+  updateUserWallet: async (walletAddress) => {
+    set({ isLoading: true });
+    try {
+      await api.put("/rewards/update-wallet", { walletAddress });
+      set((state) => {
+        const updatedUser = { ...state.user, walletAddress };
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+        return { user: updatedUser, isLoading: false };
+      });
+    } catch (err) {
+      set({ isLoading: false });
+      throw err;
+    }
+  },
+
+  // Convert Reputation Points into Internal Birr
+  convertPointsToBirr: async () => {
+    set({ isLoading: true });
+    try {
+      const res = await api.post("/rewards/convert");
+      set((state) => {
+        const updatedUser = { ...state.user, points: res.data.newPoints, birrBalance: res.data.newBirrBalance };
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+        return { user: updatedUser, isLoading: false };
+      });
+      return res.data;
+    } catch (err) {
+      set({ isLoading: false });
+      throw err;
+    }
+  },
+
+  // Swap Birr for Global Creditcoin (CTC)
+  swapBirrToCtc: async (amount) => {
+    set({ isLoading: true });
+    try {
+      const res = await api.post("/credit/swap", { birrAmount: amount });
+      set((state) => {
+        const updatedUser = { ...state.user, birrBalance: res.data.newBirrBalance, ctcBalance: res.data.newCtcBalance };
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+        return { user: updatedUser, isLoading: false };
+      });
+      return res.data;
+    } catch (err) {
+      set({ isLoading: false });
+      throw err;
+    }
+  },
+
+  // Execute Loan Disbursement
   applyForLoan: async () => {
     set({ isLoading: true });
     try {
-      // Calls the /api/credit/apply-loan route on backend
       const res = await api.post("/credit/apply-loan");
-      set((state) => ({
-        user: { 
-          ...state.user, 
-          ctcBalance: res.data.newBalance, // Loan disbursed into CTC wallet
-          activeLoan: true 
-        },
-        isLoading: false,
-      }));
+      set((state) => {
+        const updatedUser = { ...state.user, ctcBalance: res.data.newBalance, activeLoan: true };
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+        return { user: updatedUser, isLoading: false };
+      });
+      return res.data;
+    } catch (err) {
+      set({ isLoading: false });
+      throw err;
+    }
+  },
+
+  // Sell Tokens/Birr for Cash (Telebirr/Bank)
+  withdrawTokens: async (amount, method, details, tokenType) => {
+    set({ isLoading: true });
+    try {
+      const res = await api.post("/rewards/withdraw", { amount, method, details, tokenType });
+      set((state) => {
+        const updatedUser = { ...state.user, birrBalance: res.data.newBirrBalance, ctcBalance: res.data.newCtcBalance };
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+        return { user: updatedUser, isLoading: false };
+      });
       return res.data;
     } catch (err) {
       set({ isLoading: false });
