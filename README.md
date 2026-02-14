@@ -1,4 +1,4 @@
-📖 Overview
+
 T2T (Trash to Token) is a Bitcoin‑secured circular economy platform that transforms plastic waste into a financial identity. By bridging physical recycling with blockchain technology, AI verification, and micro‑finance, T2T creates a transparent, incentive‑driven ecosystem where every bottle has value.
 
 "Every bottle becomes a digital asset. Every recycler builds a credit history."
