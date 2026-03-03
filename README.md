@@ -1,226 +1,149 @@
+🌍 T2T (Trash to Token)
+A Bitcoin-Secured Circular Economy Infrastructure for the World
+T2T transforms plastic waste into financial identity.
+By bridging physical recycling with blockchain technology, AI verification, and micro-finance, T2T creates a transparent, incentive-driven circular economy where:
 
-T2T (Trash to Token) is a Bitcoin‑secured circular economy platform that transforms plastic waste into a financial identity. By bridging physical recycling with blockchain technology, AI verification, and micro‑finance, T2T creates a transparent, incentive‑driven ecosystem where every bottle has value.
+Every bottle becomes a digital asset. Every recycler builds a financial identity.
 
-"Every bottle becomes a digital asset. Every recycler builds a credit history."
+🚨The Global Problems We Solve
+🌊 1. Plastic Waste Has No Financial Value
+Millions of plastic bottles end up in landfills, rivers, and oceans because waste collectors and consumers lack incentives.
 
-🚨 The Problem We Solve
-Plastic waste chokes Ethiopia – millions of bottles end up in landfills and rivers with no value to collectors.
+⚠ 2. Counterfeit Products Harm Consumers
+Fake beverages and medicines flood markets globally, with no easy authenticity verification system.
 
-Counterfeit products kill – fake drinks and medicine flood the market with no way to verify authenticity.
+🏦 3. 1.4+ Billion People Are Unbanked
+Billions lack access to savings, credit, and financial services.
 
-70% of Ethiopians are unbanked – they have no savings, no credit, no access to loans.
+♻ 4. Recycling Has No Reward Layer
+Consumers and informal waste workers receive little or no direct economic benefit for recycling.
 
-Recycling has no reward – consumers and waste pickers have zero incentive to return bottles.
+📊 5. Brands & Governments Lack Real Data
+No real-time visibility into:
 
-Brands and government fly blind – no data on what actually gets recycled or who is doing the work.
-
-T2T fixes all five by giving every bottle a digital twin that pays you instantly when you recycle and builds your financial identity on the blockchain.
-
-✨ The Solution – 7‑Step Circular Protocol
+What gets recycled
+Who recycles it
+Environmental impact metrics
+✨ The T2T Solution
+The 7-Step Circular Value Protocol
 1️⃣ Corporate Provisioning (Factory Level)
-Factory admin pays a 1 STX license fee via x402 to activate the system.
+Manufacturer pays 1 STX license fee via x402 to activate T2T.
+System generates unique 8-digit Cap & Body codes for every bottle.
+Codes are laser-etched on cap and bottle body.
+Batch metadata (MFG date, expiry, ingredients) is cryptographically attached.
+Verified by authorized conformity assessment bodies.
+✅ Every bottle now has a digital twin secured by Bitcoin (via Stacks).
 
-Admin generates unique 8‑digit codes (Cap & Body) for every bottle.
-
-Codes are laser‑etched under the cap and on the bottle body.
-
-Official batch data (MFG date, expiry, ingredients) is attached and verified by the Conformity Assessment Enterprise.
-
-2️⃣ Safety Oracle (Consumer Protection)
-Consumer enters the Cap Code on the Safety Oracle page.
-
-A micro‑payment (0.001 STX) unlocks the government‑verified safety manifest.
-
-Manufacturing history, ingredients, and authenticity proof are displayed instantly.
+2️⃣ Safety Oracle (Consumer Protection Layer)
+Consumer enters Cap Code.
+Pays micro-fee (0.001 STX).
+Instantly unlocks verified product safety manifest:
+Manufacturing data
+Ingredients
+Authenticity proof
+✅ Stops counterfeit distribution. ✅ Builds product trust globally.
 
 3️⃣ Loyalty Reward (Sip & Earn)
-After drinking, the user redeems the Cap Code again.
+After consumption:
 
-Backend instantly credits Points + Internal Birr to the user's MongoDB profile – fast and gas‑free.
+User redeems Cap Code again.
+Backend instantly credits:
+Reward Points
+Internal Digital Currency (Birr equivalent / local stable value)
+Gas-free, instant credit via MongoDB ledger.
+
+✅ Consumption becomes financially rewarding.
 
 4️⃣ AI Smart Bin (Proof of Recycling)
-User logs in at the bin with their T2T‑ID.
+At Smart Bin:
 
-Computer Vision AI verifies the bottle (PET plastic, Coca‑Cola brand, physical presence).
+User logs in with T2T-ID.
+Computer Vision verifies:
+PET plastic type
+Brand authenticity
+Physical bottle presence
+Only after AI validation can Body Code be entered.
 
-Only after AI confirmation can the user enter the Body Code.
+Double reward is issued for verified physical recycling.
 
-Double rewards are credited for physically recycling.
+✅ Prevents fraud ✅ Ensures real-world recycling ✅ Generates verified environmental data
 
 5️⃣ Premium Marketplace
-A micro‑fee (0.001 STX) grants entry to the Marketplace.
-
-Users spend their earned Birr on real Coca‑Cola products, T‑shirts, movie tickets – balance deducted instantly.
+0.001 STX micro-fee to access marketplace.
+Users spend earned digital currency on:
+Consumer goods
+Event tickets
+Partner products
+Balance deducted instantly.
+✅ Circular spending ecosystem.
 
 6️⃣ Mega Lottery
-Pay 0.005 STX to enter the Lottery room.
+0.005 STX entry fee.
+Users purchase tickets using earned currency.
+Prizes may include:
+Car
+House
+Motorbike
+Each ticket burns tokens.
+🔥 Deflationary mechanism strengthens ecosystem.
 
-Use Birr to buy tickets for a chance to win a Car, House, or Motorbike.
+7️⃣ Liquidity Exit (Trash → Cash)
+Users convert digital balance into:
 
-Each entry burns tokens, strengthening the economy.
+Mobile money
+Bank transfer
+Crypto wallet
+Recycling becomes instant liquidity.
 
-7️⃣ Liquidity Exit
-Convert digital Birr to real cash directly to Telebirr or bank account.
-
-Trash becomes money – instantly.
-
-🛠️ Tech Stack
+🛠️ Technology Stack
 Frontend
-
 React 18 (Vite)
-
-Zustand (state management)
-
-Framer Motion (animations)
-
+Zustand
+Framer Motion
 React Router DOM
-
 Axios
-
-Lucide React (icons)
-
+Lucide React
 Backend
-
-Node.js + Express
-
+Node.js
+Express
 MongoDB + Mongoose
-
-JWT authentication
-
+JWT Authentication
 bcryptjs
-
 Blockchain & Payments
-
-Stacks (Bitcoin Layer 2) – @stacks/connect
-
-x402 micropayment protocol
-
-Creditcoin (for green credit scoring – planned)
-
+Stacks (Bitcoin Layer 2)
+x402 Micropayment Protocol
+Creditcoin (Planned: Green Credit Scoring)
 AI & Hardware
+Computer Vision (Recycling Verification)
+IoT Smart Bin (Planned Global Deployment)
+🏗️ System Architecture
+┌─────────────────┐        ┌─────────────────┐        ┌─────────────────┐
+│   React App     │  ───►  │   Express API   │  ───►  │    MongoDB      │
+│   (Frontend)    │        │   (Backend)     │        │   (Database)    │
+└─────────────────┘        └─────────────────┘        └─────────────────┘
+          │                          │                          │
+          ▼                          ▼                          ▼
+┌─────────────────┐        ┌─────────────────┐        ┌─────────────────┐
+│ Leather Wallet  │  ───►  │   Stacks Node   │  ───►  │   Creditcoin    │
+│ (x402 Payments) │        │ (Bitcoin Layer2)│        │ (Credit Scoring)│
+└─────────────────┘        └─────────────────┘        └─────────────────┘
+🌎 Why T2T Matters Globally
+T2T is not just a recycling app.
 
-Computer Vision AI integration (for smart bin verification)
+It is:
 
-IoT Smart Bin interface (planned)
+A decentralized environmental data infrastructure
+A consumer protection system
+A micro-finance onboarding engine
+A Bitcoin-secured circular economy protocol
+A green credit scoring layer
+🧠 Long-Term Vision
+T2T builds the world’s first:
 
-🏗️ Architecture
-text
-┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐
-│   React Frontend│ ─── │   Express API   │ ─── │    MongoDB       │
-│   (Vite)        │      │   (Backend)     │      │   (Database)     │
-└─────────────────┘      └─────────────────┘      └─────────────────┘
-         │                         │                         │
-         │                         │                         │
-         ▼                         ▼                         ▼
-┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐
-│  Leather Wallet │ ─── │  Stacks Node    │ ─── │  Creditcoin      │
-│  (x402 payments)│      │  (Bitcoin L2)   │      │  (Credit Score)  │
-└─────────────────┘      └─────────────────┘      └─────────────────┘
-🚀 Getting Started
-Prerequisites
-Node.js v16+ (v18 recommended)
+Proof-of-Recycling Financial Identity System
 
-npm or yarn
+Where:
 
-MongoDB instance (local or Atlas)
-
-Stacks wallet (Leather / Hiro) for testing payments
-
-Git
-
-Installation
-1️⃣ Clone the repository
-bash
-git clone https://github.com/Koket-al/T2T-Technologies.git
-cd T2T-Technologies
-2️⃣ Backend Setup
-bash
-cd backend
-npm install
-Create a .env file in the backend folder (see Environment Variables).
-
-bash
-npm run dev
-Server will run on http://localhost:5000.
-
-3️⃣ Frontend Setup
-bash
-cd ../frontend
-npm install
-Create a .env file in the frontend folder (see Environment Variables).
-
-bash
-npm run dev
-Frontend will run on http://localhost:5173.
-
-🔐 Environment Variables
-Backend .env
-env
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/t2t
-JWT_SECRET=your_super_secret_jwt_key
-STACKS_ADMIN_ADDRESS=ST1PQHQKV0RJ7V66A9KTC18A5M0939W826GPX8SR
-NODE_ENV=development
-Frontend .env
-env
-VITE_API_URL=http://localhost:5000/api
-📚 API Reference
-Method	Endpoint	Description	Auth Required
-POST	/api/auth/signup	Register new user	No
-POST	/api/auth/login	Login user	No
-GET	/api/auth/check-auth	Verify JWT token	Yes
-GET	/api/admin/check-status	Check if admin license is active	Yes (Admin)
-POST	/api/admin/unlock-panel	Activate admin panel (payment optional)	Yes (Admin)
-POST	/api/admin/generate-batch	Generate new batch of codes	Yes (Admin)
-GET	/api/admin/batch-history	Fetch all batches	Yes (Admin)
-GET	/api/admin/export/:batchId	Export hashes for a batch	Yes (Admin)
-POST	/api/rewards/convert	Convert points to Birr	Yes
-POST	/api/marketplace/purchase	Purchase item with Birr	Yes
-POST	/api/lottery/unlock	Unlock lottery access	Yes
-POST	/api/credit/swap	Swap Birr to CTC	Yes
-POST	/api/credit/apply-loan	Apply for micro‑loan	Yes
-Full API documentation available at /api-docs (if Swagger integrated).
-
-🧪 Running Tests
-bash
-# Backend tests
-cd backend
-npm test
-
-# Frontend tests
-cd frontend
-npm test
-🤝 Contributing
-We welcome contributions! Please follow these steps:
-
-Fork the repository
-
-Create a feature branch (git checkout -b feature/AmazingFeature)
-
-Commit your changes (git commit -m 'Add some AmazingFeature')
-
-Push to the branch (git push origin feature/AmazingFeature)
-
-Open a Pull Request
-
-Please read our Contributing Guidelines for more details.
-
-📄 License
-This project is licensed under the MIT License – see the LICENSE file for details.
-
-🙏 Acknowledgments
-Stacks Foundation – for the x402 micropayment protocol and Bitcoin Layer 2 infrastructure.
-
-Creditcoin – for green credit scoring and lending capabilities.
-
-Coca‑Cola Ethiopia – for pilot collaboration and industry insights.
-
-Conformity Assessment Enterprise – for product safety verification standards.
-
-All contributors, testers, and early adopters who believe in turning trash into treasure.
-
-📬 Contact
-Project Link: https://github.com/Koket-al/T2T-Technologies
-
-Issues: https://github.com/Koket-al/T2T-Technologies/issues
-
+Waste = Collateral
+Recycling = Credit history
+Plastic = Digital asset
